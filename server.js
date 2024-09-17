@@ -22,8 +22,10 @@ cron.schedule("0 0 * * *", () => {
 // ... rest of your server setup
 
 const app = express();
+const port = process.env.PORT || 5000;
+const NODE_ENV = process.env.NODE_ENV || "development";
 
-app.use(morgan("dev"));
+app.use(morgan(NODE_ENV));
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -53,7 +55,6 @@ app.use("*", (req, res) => {
   res.status(404).json({ message: "not found" });
 });
 
-const port = process.env.PORT || 5000;
 app.listen(port, () => {
   connectDB();
   console.log("Server running on port ", port);
