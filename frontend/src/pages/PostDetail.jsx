@@ -26,10 +26,11 @@ const PostDetail = () => {
   if (!post) return <div>Loading...</div>;
 
   return (
-    <VStack spacing={8} align="stretch">
+    <VStack spacing={8} align="stretch" padding={5}>
       <Heading>{post.title}</Heading>
-      <Text>{post.content}</Text>
-      <UserProfile user={post.author} />
+      <Text dangerouslySetInnerHTML={{ __html: post.content }}></Text>
+
+      <UserProfile user={post.author} post={post} />
       <DonationForm onDonate={handleDonate} />
     </VStack>
   );

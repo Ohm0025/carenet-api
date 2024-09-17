@@ -41,8 +41,10 @@ const Home = () => {
   }, []);
 
   return (
-    <VStack spacing={8} align={"stretch"}>
-      <Heading>Latest Posts</Heading>
+    <VStack spacing={8} align={"stretch"} paddingX={6}>
+      <Heading fontSize={"1.5rem"} mt={8} ml={5}>
+        Latest Posts
+      </Heading>
       {posts.map((post, index) => (
         <React.Fragment key={post._id}>
           <BlogPost

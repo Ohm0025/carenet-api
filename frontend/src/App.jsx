@@ -17,15 +17,19 @@ function App() {
       <AuthProvider>
         <Router>
           <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/post/:id" element={<PostDetail />} />
-            <Route path="/create-post" element={<CreatePost />} />
-            <Route path="/dashboard" element={<UserDashboard />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-          <Footer />
+          <div
+            style={{ maxWidth: "1000px", margin: "0 auto", minWidth: "320px" }}
+          >
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/post/:id" element={<PostDetail />} />
+              <Route path="/create-post" element={<CreatePost />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+            <Footer />
+          </div>
         </Router>
       </AuthProvider>
     </ChakraProvider>
