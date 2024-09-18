@@ -46,7 +46,6 @@ const Login = () => {
         showToast("Login Successful", "Welcome back!", "success");
         navigate("/");
       } catch (error) {
-        console.error("Login failed:", error);
         showToast("Login Failed", error.response?.data?.message, "error");
       }
     }
@@ -54,7 +53,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     validateError();
   };
 
