@@ -13,17 +13,25 @@ import {
   FormLabel,
   Switch,
 } from "@chakra-ui/react";
-import { createPost } from "../utils/api";
+import { createPost, editPost } from "../utils/api";
 
-const PostEditor = () => {
+const PostEditor = ({ editedPost = null, closeEdit = null }) => {
   const [isPublic, setIsPublic] = useState(true);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState(editedPost ? editedPost.title : "");
+  const [content, setContent] = useState(editedPost ? editedPost.content : "");
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    const newPost = await createPost({ title, content, isPublic });
-    navigate(`/post/${newPost._id}`);
+    if (!editedPost) {
+      const newPost = await createPost({ title, content, isPublic });
+      navigate(`/post/${newPost._id}`);
+    } else {
+      const newPost = await editPost(
+        { title, content, isPublic },
+        editedPost._id
+      );
+      closeEdit();
+    }
   };
 
   const modules = useMemo(
@@ -71,7 +79,7 @@ const PostEditor = () => {
     >
       <VStack spacing={6} align="stretch">
         <Heading as="h2" size="xl" textAlign="center" color="green.500">
-          Create New Post
+          {editedPost ? "Edit Post" : "Create New Post"}
         </Heading>
 
         <FormControl>
@@ -80,8 +88,9 @@ const PostEditor = () => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter post title"
-            size="lg"
+            // size="lg"
             focusBorderColor="green.400"
+            fontSize={{ base: "0.8rem", md: "1.2rem", lg: "lg" }}
           />
         </FormControl>
 

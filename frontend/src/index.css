@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -12,4 +14,20 @@
 body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+body {
+  font-family: "Geologica", sans-serif !important;
+  font-size: 0.7rem !important;
+}
+
+@media only screen and (min-width: 400px) {
+  body {
+    font-size: 1rem !important;
+  }
+}
+@media only screen and (min-width: 768px) {
+  body {
+    font-size: 1.4rem !important;
+  }
 }

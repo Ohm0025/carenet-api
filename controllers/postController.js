@@ -250,3 +250,34 @@ export const ratePost = async (req, res) => {
       .json({ message: "Error rating post", error: error.message });
   }
 };
+
+export const editPost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content, isPublic } = req.body;
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.author.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to edit this post" });
+    }
+
+    post.title = title;
+    post.content = content;
+    post.isPublic = isPublic;
+    post.updatedAt = Date.now();
+
+    await post.save();
+
+    res.json(post);
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Error updating post", error: error.message });
+  }
+};

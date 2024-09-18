@@ -11,6 +11,8 @@ export const getPosts = () => api.get("/posts").then((res) => res.data);
 export const getPost = (id) => api.get(`/posts/${id}`).then((res) => res.data);
 export const createPost = (postData) =>
   api.post("/posts", postData).then((res) => res.data);
+export const editPost = (postData, postid) =>
+  api.patch(`/posts/${postid}`, postData).then((res) => res.data);
 export const likePost = (id) =>
   api.post(`/posts/${id}/like`).then((res) => res.data);
 export const savePost = (id) =>
