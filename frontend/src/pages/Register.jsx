@@ -1,6 +1,6 @@
 // src/pages/Register.js
 import React, { useState } from "react";
-import { Box, Button, Input, VStack, useToast } from "@chakra-ui/react";
+import { Box, Button, Input, VStack, useToast, Image } from "@chakra-ui/react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -37,8 +37,15 @@ const Register = () => {
   };
 
   return (
-    <Box maxWidth="400px" margin="auto">
-      <form onSubmit={handleSubmit}>
+    <Box maxWidth="400px" margin="auto" paddingTop={8}>
+      <Image
+        src="../../public/vite.png"
+        alt="carenet-icon"
+        boxSize="200px"
+        objectFit="cover"
+        marginX={"auto"}
+      />
+      <form onSubmit={handleSubmit} style={{ marginTop: "2rem" }}>
         <VStack spacing={4}>
           <Input
             placeholder="Username"

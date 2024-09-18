@@ -10,28 +10,36 @@ import CreatePost from "./pages/CreatePost";
 import UserDashboard from "./pages/UserDashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
+import { ToastProvider } from "./contexts/ToastContext";
 
 function App() {
   return (
     <ChakraProvider>
       <AuthProvider>
-        <Router>
-          <Header />
-          <div
-            style={{ maxWidth: "1000px", margin: "0 auto", minWidth: "320px" }}
-          >
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/post/:id" element={<PostDetail />} />
-              <Route path="/create-post" element={<CreatePost />} />
-              <Route path="/dashboard" element={<UserDashboard />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/verify-email/:token" element={<VerifyEmail />} />
-            </Routes>
-            <Footer />
-          </div>
-        </Router>
+        <ToastProvider>
+          <Router>
+            <Header />
+            <div
+              style={{
+                maxWidth: "1000px",
+                margin: "0 auto",
+                minWidth: "320px",
+              }}
+            >
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/post/:id" element={<PostDetail />} />
+                <Route path="/create-post" element={<CreatePost />} />
+                <Route path="/dashboard" element={<UserDashboard />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/verify-email/:token" element={<VerifyEmail />} />
+              </Routes>
+              <Footer />
+            </div>
+          </Router>
+        </ToastProvider>
       </AuthProvider>
     </ChakraProvider>
   );
