@@ -1,21 +1,79 @@
 import React from "react";
 import DOMPurify from "dompurify";
-import { Box } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 
-const FormatContent = ({ content }) => {
-  const sanitizedContent = DOMPurify.sanitize(content, {
-    ADD_TAGS: ["iframe"],
-    ADD_ATTR: ["allow", "allowfullscreen", "frameborder", "scrolling"],
-  });
+const FormattedContent = ({ content }) => {
+  const sanitizeConfig = {
+    ALLOWED_TAGS: [
+      "p",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "br",
+      "strong",
+      "em",
+      "u",
+      "ol",
+      "ul",
+      "li",
+      "a",
+      "img",
+      "blockquote",
+      "code",
+      "pre",
+      "hr",
+    ],
+    ALLOWED_ATTR: ["href", "src", "alt"],
+  };
+
+  const sanitizedContent = DOMPurify.sanitize(content, sanitizeConfig);
+
+  const createMarkup = () => ({ __html: sanitizedContent });
+
   return (
     <Box
       className="formatted-content"
-      dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+      dangerouslySetInnerHTML={createMarkup()}
       sx={{
         "& > *:first-of-type": { marginTop: 0 },
         "& > *:last-child": { marginBottom: 0 },
         "& p": { marginBottom: "1em" },
-        "& h1, & h2, & h3, & h4, & h5, & h6": {
+        "& h1": {
+          fontSize: "2rem",
+          fontWeight: "bold",
+          marginTop: "1.5em",
+          marginBottom: "0.5em",
+        },
+        "& h2": {
+          fontSize: "1.5rem",
+          fontWeight: "bold",
+          marginTop: "1.5em",
+          marginBottom: "0.5em",
+        },
+        "& h3": {
+          fontSize: "lg",
+          fontWeight: "bold",
+          marginTop: "1.5em",
+          marginBottom: "0.5em",
+        },
+        "& h4": {
+          fontSize: "md",
+          fontWeight: "bold",
+          marginTop: "1.5em",
+          marginBottom: "0.5em",
+        },
+        "& h5": {
+          fontSize: "sm",
+          fontWeight: "bold",
+          marginTop: "1.5em",
+          marginBottom: "0.5em",
+        },
+        "& h6": {
+          fontSize: "xs",
+          fontWeight: "bold",
           marginTop: "1.5em",
           marginBottom: "0.5em",
         },
@@ -42,20 +100,10 @@ const FormatContent = ({ content }) => {
           marginBottom: "1em",
         },
         "& img": { maxWidth: "100%", height: "auto", marginBottom: "1em" },
-        "& table": {
-          width: "100%",
-          borderCollapse: "collapse",
-          marginBottom: "1em",
-        },
-        "& th, & td": {
-          border: "1px solid",
-          borderColor: "gray.300",
-          padding: "0.5em",
-        },
-        "& th": { backgroundColor: "gray.100" },
+        "& a": { color: "blue.500", textDecoration: "underline" },
       }}
     />
   );
 };
 
-export default FormatContent;
+export default FormattedContent;

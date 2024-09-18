@@ -107,6 +107,8 @@ const PostEditor = ({ editedPost = null, closeEdit = null }) => {
             modules={modules}
             formats={formats}
           />
+
+          {/* <MediumStyleEditor value={content} onChange={setContent} /> */}
         </Box>
         <FormControl display="flex" alignItems="center">
           <FormLabel htmlFor="is-public" mb="0">

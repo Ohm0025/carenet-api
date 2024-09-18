@@ -1,19 +1,23 @@
+.quill {
+  display: flex;
+  width: 100%;
+  flex-direction: column-reverse;
+}
+
 .quill-editor .ql-container {
-  border-bottom-left-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
-  background: #fefcfc;
+  background: #ffffff;
 }
 
 .quill-editor .ql-toolbar {
-  border-top-left-radius: 0.5em;
-  border-top-right-radius: 0.5em;
-  background: #f3f3f3;
+  background: #ffffff;
 }
 
 .quill-editor .ql-editor {
-  min-height: 18em;
+  min-height: 20em;
+  overflow-y: auto;
+  max-height: 800px;
 }
 
 .quill-editor .ql-editor:focus {
-  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.6);
+  box-shadow: 2px 2px 2px 2px rgba(66, 153, 225, 0.6);
 }

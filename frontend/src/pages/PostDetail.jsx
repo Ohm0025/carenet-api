@@ -49,10 +49,10 @@ const PostDetail = () => {
         <>
           {" "}
           <HStack justifyContent={"space-between"}>
-            <Heading fontSize={{ base: "0.8rem", md: "1.2rem", lg: "2rem" }}>
+            <Heading fontSize={{ base: "1rem", md: "1.5rem", lg: "2rem" }}>
               {post.title}
             </Heading>
-            {user._id === post.author?._id && (
+            {user && user._id === post.author?._id && (
               <Button onClick={() => setIsEdit(true)}>Edit</Button>
             )}
           </HStack>

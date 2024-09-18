@@ -19,8 +19,16 @@ const BlogPost = ({ post, onLike, onSave, onShare, onRate }) => {
       p={4}
       mb={4}
     >
-      <Flex align={"center"} justifyContent={"space-between"}>
-        <Heading as={"h2"} size={"xl"}>
+      <Flex
+        flexDirection={{ base: "column", md: "row" }}
+        align={"center"}
+        gap={{ base: "10px", md: "0px" }}
+        justifyContent={"space-between"}
+      >
+        <Heading
+          as={"h2"}
+          fontSize={{ base: "1rem", md: "1.5rem", lg: "2rem" }}
+        >
           <Link to={`/post/${post._id}`}>{post.title}</Link>
         </Heading>
 

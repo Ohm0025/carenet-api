@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     const user = await apiRegister(username, email, password);
-    setUser(user);
+    console.log("register success : navigate to email verification");
   };
 
   const logout = async () => {
