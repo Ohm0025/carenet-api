@@ -27,6 +27,7 @@ function App() {
               <Route path="/dashboard" element={<UserDashboard />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/verify-email/:token" element={<VerifyEmail />} />
             </Routes>
             <Footer />
           </div>

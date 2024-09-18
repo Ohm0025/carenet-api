@@ -52,3 +52,5 @@ export const sharePost = (id) => {
     };
   });
 };
+export const verifyEmail = (token) =>
+  api.get(`/auth/verify-email/${token}`).then((res) => res.data);

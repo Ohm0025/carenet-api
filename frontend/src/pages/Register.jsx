@@ -1,6 +1,6 @@
 // src/pages/Register.js
 import React, { useState } from "react";
-import { Box, Button, Input, VStack } from "@chakra-ui/react";
+import { Box, Button, Input, VStack, useToast } from "@chakra-ui/react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -10,15 +10,29 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const { register } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await register(username, email, password);
-      navigate("/");
+      toast({
+        title: "Registration successful",
+        description: "Please check your email to verify your account.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error);
-      // Show error message to user
+      toast({
+        title: "Registration failed",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
