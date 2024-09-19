@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Button, Heading, HStack, Text, VStack, Box } from "@chakra-ui/react";
 import DonationForm from "../components/DonationForm";
 import UserProfile from "../components/UserProfile";
-import { getPost, donateToAuthor } from "../utils/api";
+import { getPost } from "../utils/api";
 import { useAuth } from "../contexts/AuthContext";
 import RichTextEditor from "../components/RichTextEditor";
 import FormatContent from "../components/FormatContent";
@@ -16,19 +16,14 @@ const PostDetail = () => {
 
   const [isEdit, setIsEdit] = useState(false);
 
-  useEffect(() => {
-    fetchPost();
-  }, [id]);
-
   const fetchPost = async () => {
     const fetchedPost = await getPost(id);
     setPost(fetchedPost);
   };
 
-  const handleDonate = async (amount, paymentMethod) => {
-    await donateToAuthor(post.author._id, amount, paymentMethod);
-    // Show success message to user
-  };
+  useEffect(() => {
+    fetchPost();
+  }, [id]);
 
   if (!post) return <div>Loading...</div>;
 
@@ -58,9 +53,13 @@ const PostDetail = () => {
             )}
           </HStack>
           <FormatContent content={post.content} />
-          <PostButton post={post} />
-          <UserProfile user={post.author} post={post} />
-          <DonationForm onDonate={handleDonate} />
+          {user && user._id !== post.author._id && (
+            <>
+              <PostButton post={post} fetchPost={fetchPost} />
+              <UserProfile user={post.author} />
+            </>
+          )}
+          <DonationForm />
         </>
       )}
     </VStack>

@@ -221,28 +221,28 @@ export const ratePost = async (req, res) => {
     }
 
     // Check if the user has already rated the post
-    const existingRatingIndex = post.rating.findIndex((r) =>
-      r.user.equals(req.user._id)
+    const existingRatingIndex = post.ratingArr.findIndex((r) =>
+      r.user?.equals(req.user._id)
     );
 
     if (existingRatingIndex !== -1) {
       // Update existing rating
-      post.rating[existingRatingIndex].value = rating;
+      post.ratingArr[existingRatingIndex].value = rating;
     } else {
       // Add new rating
-      post.rating.push({ user: req.user._id, value: rating });
+      post.ratingArr.push({ user: req.user._id, value: rating });
     }
 
     // Calculate new average rating
-    const totalRating = post.rating.reduce((sum, r) => sum + r.value, 0);
-    post.averageRating = totalRating / post.rating.length;
+    const totalRating = post.ratingArr.reduce((sum, r) => sum + r.value, 0);
+    post.ratingCount = totalRating / post.ratingArr.length;
 
     await post.save();
 
     res.json({
       message: "Post rated successfully",
       averageRating: post.averageRating,
-      totalRatings: post.rating.length,
+      totalRatings: post.ratingArr.length,
     });
   } catch (error) {
     res

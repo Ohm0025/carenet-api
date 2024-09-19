@@ -30,7 +30,7 @@ const BlogPost = ({ post }) => {
             <Icon
               key={rating}
               as={FaStar}
-              color={rating <= post.rating ? "yellow.500" : "gray.300"}
+              color={rating <= post.ratingCount ? "yellow.500" : "gray.300"}
             />
           ))}
         </Flex>

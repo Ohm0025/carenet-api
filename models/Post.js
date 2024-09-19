@@ -6,7 +6,16 @@ const PostSchema = new mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   isPublic: { type: Boolean, default: true },
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  rating: { type: Number, default: 0 },
+  ratingArr: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+      value: { type: Number, required: true },
+    },
+  ],
   ratingCount: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },

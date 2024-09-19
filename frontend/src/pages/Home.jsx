@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import { VStack, Heading } from "@chakra-ui/react";
 import BlogPost from "../components/BlogPost";
 import Advertisement from "../components/Advertisement";
-import {
-  getPosts,
-  likePost,
-  savePost,
-  sharePost,
-  ratePost,
-} from "../utils/api";
+import { getPosts } from "../utils/api";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);

@@ -18,7 +18,9 @@ export const likePost = (id) =>
 export const savePost = (id) =>
   api.post(`/posts/${id}/save`).then((res) => res.data);
 export const ratePost = (id, rating) =>
-  api.post(`/posts/${id}/rate`, { rating }).then((res) => res.data);
+  api
+    .post(`/posts/${id}/rate`, { rating: Number(rating) })
+    .then((res) => res.data);
 export const getUserPosts = () =>
   api.get("/users/posts").then((res) => res.data);
 export const getUserStats = () =>
