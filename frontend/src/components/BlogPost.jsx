@@ -1,16 +1,8 @@
-import {
-  Box,
-  Heading,
-  Text,
-  Button,
-  Flex,
-  Icon,
-  Badge,
-} from "@chakra-ui/react";
+import { Box, Heading, Text, Flex, Icon, Badge } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { FaHeart, FaBookmark, FaShare, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 
-const BlogPost = ({ post, onLike, onSave, onShare, onRate }) => {
+const BlogPost = ({ post }) => {
   return (
     <Box
       borderWidth={"1px"}

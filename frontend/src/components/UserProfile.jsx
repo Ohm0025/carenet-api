@@ -19,30 +19,6 @@ const UserProfile = ({ user, onSubscribe, post }) => {
           <Button onClick={() => onSubscribe(user._id)}>Subscribe</Button>
         </HStack>
         <Text>{user.bio}</Text>
-        <Flex mt={4} justify={"space-between"} align={"center"}>
-          <Flex>
-            <Button
-              leftIcon={<Icon as={FaHeart} />}
-              onClick={() => onLike(post._id)}
-              mr={2}
-            >
-              {post.likes.length}
-            </Button>
-            <Button
-              leftIcon={<Icon as={FaBookmark} />}
-              onClick={() => onSave(post._id)}
-              mr={2}
-            >
-              Save
-            </Button>
-            <Button
-              leftIcon={<Icon as={FaShare} />}
-              onClick={() => onShare(post._id)}
-            >
-              Share
-            </Button>
-          </Flex>
-        </Flex>
       </VStack>
     </Box>
   );

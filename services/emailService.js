@@ -46,7 +46,6 @@ export const sendVerificationEmail = async (email, token) => {
     html: `
         <h1>Verify Your Email</h1>
       <p>Please click the link below to verify your email address:</p>
-      <p>${token}</p>
       <a href="${process.env.FRONTEND_URL}/verify-email/${token}">Verify Email</a>
       `,
   };

@@ -18,24 +18,6 @@ const Home = () => {
     setPosts(fetchPosts);
   };
 
-  const handleLike = async (postId) => {
-    await likePost(postId);
-    fetchPosts();
-  };
-
-  const handleSave = async (postId) => {
-    await savePost(postId);
-  };
-
-  const handleShare = (postId) => {
-    sharePost(postId);
-  };
-
-  const handleRate = async (postId, rating) => {
-    await ratePost(postId, rating);
-    fetchPosts();
-  };
-
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -47,13 +29,7 @@ const Home = () => {
       </Heading>
       {posts.map((post, index) => (
         <React.Fragment key={post._id}>
-          <BlogPost
-            post={post}
-            onLike={handleLike}
-            onSave={handleSave}
-            onShare={handleShare}
-            onRate={handleRate}
-          />
+          <BlogPost post={post} />
           {index % 5 === 4 && <Advertisement adCode={<>google ads</>} />}
         </React.Fragment>
       ))}

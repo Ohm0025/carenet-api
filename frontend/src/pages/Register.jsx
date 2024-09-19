@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import { useToastContext } from "../contexts/ToastContext";
+import { formatErrorText } from "../utils/formatText";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -51,10 +52,19 @@ const Register = () => {
       });
       try {
         await register(username, email, password);
-        showToast("Register Successful", "Congraturation", "success");
+        showToast(
+          "Register Successful",
+          "Please check your email to verify your account",
+          "success"
+        );
         navigate("/login");
       } catch (error) {
-        showToast("Register Failed", error.response?.data?.error, "error");
+        const errorMessage = error.response?.data?.error;
+        showToast(
+          "Register Failed",
+          errorMessage && formatErrorText(errorMessage, setErrors),
+          "error"
+        );
       }
     }
   };

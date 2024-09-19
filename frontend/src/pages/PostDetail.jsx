@@ -7,6 +7,7 @@ import { getPost, donateToAuthor } from "../utils/api";
 import { useAuth } from "../contexts/AuthContext";
 import RichTextEditor from "../components/RichTextEditor";
 import FormatContent from "../components/FormatContent";
+import PostButton from "../components/PostButton";
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -57,6 +58,7 @@ const PostDetail = () => {
             )}
           </HStack>
           <FormatContent content={post.content} />
+          <PostButton post={post} />
           <UserProfile user={post.author} post={post} />
           <DonationForm onDonate={handleDonate} />
         </>
