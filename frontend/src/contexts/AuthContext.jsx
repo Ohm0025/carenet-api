@@ -16,12 +16,20 @@ export const AuthProvider = ({ children }) => {
     checkUser();
   }, []);
 
+  const updateUser = (key, value) => {
+    setUser((prev) => ({ ...prev, [key]: value }));
+  };
+
   const checkUser = async () => {
     try {
-      const user = await getCurrentUser();
-      setUser(user);
+      const get_user = await getCurrentUser();
+      if (get_user && get_user._id) {
+        setUser(get_user);
+      } else {
+        setUser(null);
+      }
     } catch (error) {
-      setUser(null);
+      console.log(error);
     }
     setLoading(false);
   };
@@ -42,7 +50,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider
+      value={{ user, updateUser, login, register, logout, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

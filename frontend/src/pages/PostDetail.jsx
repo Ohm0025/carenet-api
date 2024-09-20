@@ -53,11 +53,18 @@ const PostDetail = () => {
             )}
           </HStack>
           <FormatContent content={post.content} />
-          {user && user._id !== post.author._id && (
+          {!user ? (
             <>
               <PostButton post={post} fetchPost={fetchPost} />
               <UserProfile user={post.author} />
             </>
+          ) : (
+            user._id !== post.author._id && (
+              <>
+                <PostButton post={post} fetchPost={fetchPost} />
+                <UserProfile user={post.author} />
+              </>
+            )
           )}
           <DonationForm />
         </>

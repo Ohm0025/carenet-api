@@ -114,5 +114,13 @@ export const logout = (req, res) => {
 };
 
 export const getCurrentUser = async (req, res) => {
-  res.status(200).json(req.user);
+  try {
+    if (req.user) {
+      res.status(200).json(req.user);
+    } else {
+      throw new Error("Authenticate requested");
+    }
+  } catch (err) {
+    res.status(400).json({ message: "get current user fail." });
+  }
 };

@@ -51,6 +51,7 @@ export const getPost = async (req, res) => {
     const post = await Post.findById(req.params.id).populate("author", [
       "username",
       "bio",
+      "avatarUrl",
     ]);
 
     if (!post) {

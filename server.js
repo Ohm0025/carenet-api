@@ -22,6 +22,7 @@ cron.schedule("0 0 * * *", () => {
 // ... rest of your server setup
 
 const app = express();
+
 const port = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || "development";
 
@@ -33,8 +34,10 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use(express.static("public"));
 
 app.get("/api/ip", (req, res) => {
   const ip = req.ip;
@@ -47,6 +50,13 @@ app.use("/api/users", userRoutes);
 app.use("/api/payments", paymentRoutes);
 
 app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res
+        .status(400)
+        .json({ message: "File is too large. Max size is 5MB." });
+    }
+  }
   console.error(err.stack);
   res.status(500).json({ message: "sth went wrong", error: err.message });
 });

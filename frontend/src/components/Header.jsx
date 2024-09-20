@@ -1,10 +1,11 @@
 import { Box, Flex, Button, Heading } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import ProfileButton from "./ProfileButton";
 
 const Header = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+
   return (
     <Box bg="green.500" px={4}>
       <Flex
@@ -28,16 +29,8 @@ const Header = () => {
               >
                 Create Post
               </Button>
-              <Button
-                onClick={() => {
-                  logout();
-                  navigate("/login");
-                }}
-                w={{ base: "70px", md: "100px", lg: "120px" }}
-                fontSize={{ base: "0.7rem", md: "1rem" }}
-              >
-                Logout
-              </Button>
+
+              <ProfileButton user={user} />
             </>
           ) : (
             <>

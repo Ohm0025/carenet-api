@@ -21,3 +21,7 @@
 .quill-editor .ql-editor:focus {
   box-shadow: 2px 2px 2px 2px rgba(66, 153, 225, 0.6);
 }
+
+.ql-picker-options {
+  top: -565% !important;
+}

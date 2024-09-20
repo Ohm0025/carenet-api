@@ -58,3 +58,10 @@ export const sharePost = (id) => {
 };
 export const verifyEmail = (token) =>
   api.get(`/auth/verify-email/${token}`).then((res) => res.data);
+
+export const updateProfilePicture = (formData) =>
+  api
+    .post("/users/profile-picture", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => res.data);

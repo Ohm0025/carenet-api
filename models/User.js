@@ -66,6 +66,7 @@ const UserSchema = new mongoose.Schema({
     },
   },
   bio: String,
+  avatarUrl: String,
   isVerified: { type: Boolean, default: false },
   verificationToken: String,
   verificationTokenExpires: Date,
