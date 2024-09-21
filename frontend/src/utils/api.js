@@ -1,9 +1,10 @@
 import axios from "axios";
+import dotenv from "dotenv";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "http://localhost:5000";
 
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: API_URL + "/api",
   withCredentials: true,
 });
 
@@ -64,4 +65,5 @@ export const updateProfilePicture = (formData) =>
     .post("/users/profile-picture", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
-    .then((res) => res.data);
+    .then((res) => res.data)
+    .catch((err) => console.error(err));

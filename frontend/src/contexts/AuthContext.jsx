@@ -6,6 +6,8 @@ import {
   getCurrentUser,
 } from "../utils/api";
 
+const API_URL = "http://localhost:5000";
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -24,7 +26,12 @@ export const AuthProvider = ({ children }) => {
     try {
       const get_user = await getCurrentUser();
       if (get_user && get_user._id) {
-        setUser(get_user);
+        setUser((prev) => {
+          return {
+            ...get_user,
+            avatarUrl: "http://localhost:5000" + "/" + get_user.avatarUrl,
+          };
+        });
       } else {
         setUser(null);
       }

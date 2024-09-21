@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import {
   Box,
   Button,
@@ -23,6 +23,7 @@ const ProfilePictureEditor = ({ currentAvatarUrl, onUpdate }) => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
+  const fileInputRef = useRef(null);
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -31,9 +32,23 @@ const ProfilePictureEditor = ({ currentAvatarUrl, onUpdate }) => {
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
-      reader.addEventListener("load", () => setImage(reader.result));
+      reader.addEventListener("load", () => {
+        setImage(reader.result);
+        onOpen();
+      });
       reader.readAsDataURL(e.target.files[0]);
-      onOpen();
+    }
+  };
+
+  const handleCloseModal = () => {
+    setImage(null);
+    setCroppedAreaPixels(null);
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    onClose();
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -73,6 +88,10 @@ const ProfilePictureEditor = ({ currentAvatarUrl, onUpdate }) => {
     });
   };
 
+  // useEffect(() => {
+  //   console.log(isOpen);
+  // }, [isOpen]);
+
   const handleSave = async () => {
     try {
       if (!croppedAreaPixels) return;
@@ -80,10 +99,9 @@ const ProfilePictureEditor = ({ currentAvatarUrl, onUpdate }) => {
       const croppedImage = await getCroppedImg(image, croppedAreaPixels);
       const formData = new FormData();
       formData.append("profilePicture", croppedImage, "profile.jpg");
-
       const response = await updateProfilePicture(formData);
-      onUpdate(response.avatarUrl);
-      onClose();
+      onUpdate("http://localhost:5000/" + response?.avatarUrl);
+      handleCloseModal();
     } catch (err) {
       console.error("Error updating profile picture: ", err);
     }
@@ -101,33 +119,36 @@ const ProfilePictureEditor = ({ currentAvatarUrl, onUpdate }) => {
             accept="image/*"
             onChange={handleFileChange}
             hidden
+            ref={fileInputRef}
           />
         </Button>
       </VStack>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={handleCloseModal} size="xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Crop Profile Picture</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box position="relative" height="400px">
-              <Cropper
-                image={image}
-                crop={crop}
-                zoom={zoom}
-                aspect={1}
-                onCropChange={setCrop}
-                onCropComplete={onCropComplete}
-                onZoomChange={setZoom}
-              />
-            </Box>
+            {image && (
+              <Box position="relative" height="400px">
+                <Cropper
+                  image={image}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={1}
+                  onCropChange={setCrop}
+                  onCropComplete={onCropComplete}
+                  onZoomChange={setZoom}
+                />
+              </Box>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={handleSave}>
               Save
             </Button>
-            <Button variant="ghost" onClick={onClose}>
+            <Button variant="ghost" onClick={handleCloseModal}>
               Cancel
             </Button>
           </ModalFooter>

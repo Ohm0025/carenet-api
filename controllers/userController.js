@@ -102,35 +102,55 @@ export const subscribeToUser = async (req, res) => {
 
 export const updateUserPicture = async (req, res) => {
   const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
+  const __dirname = path.dirname(__filename).replace("\\controllers", "");
+
+  console.log(__dirname);
 
   try {
+    if (!req.user) {
+      return res.status(400).json({ message: "Authentication required" });
+    }
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
+
+    console.log("File received : ", req.file);
+
     const filename = `${uuidv4()}.webp`;
-    const filepath = path.join(__dirname, "public", "uploads", filename);
+    const filepath = path.join(__dirname, "public", filename);
+
+    console.log("File path:", filepath);
+
     await sharp(req.file.buffer)
       .resize(300, 300)
       .webp({ quality: 80 })
       .toFile(filepath);
 
+    console.log("File processed and saved");
+
+    try {
+      await fs.access(filepath);
+      console.log("File exists after saving");
+    } catch (error) {
+      console.error("File does not exist after saving:", error);
+      return res.status(500).json({ message: "Error saving file" });
+    }
+
+    // If there's an old avatar, delete it
+    // if (user.avatarUrl) {
+    //   const oldFilepath = path.join(__dirname, "public", user.avatarUrl);
+    //   await fs
+    //     .unlink(oldFilepath)
+    //     .catch((err) => console.error("Error deleting old avatar:", err));
+    // }
     // Update user's avatarUrl in the database
     const user = await User.findByIdAndUpdate(
       req.user._id,
-      { avatarUrl: `/uploads/${filename}` },
+      { avatarUrl: `${filename}` },
       { new: true }
     );
 
-    // If there's an old avatar, delete it
-    if (user.avatarUrl) {
-      const oldFilepath = path.join(__dirname, "public", user.avatarUrl);
-      await fs
-        .unlink(oldFilepath)
-        .catch((err) => console.error("Error deleting old avatar:", err));
-    }
-
-    res.status(401).json({ avatarUrl: user.avatarUrl });
+    res.status(201).json({ avatarUrl: user.avatarUrl });
   } catch (err) {
     console.error("Error uploading profile picture:", err);
     res.status(500).json({ message: "Error uploading profile picture" });

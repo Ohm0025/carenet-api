@@ -9,7 +9,7 @@ import ProfilePictureEditor from "../components/ProfilePictureEditor";
 const UserDashboard = () => {
   const [posts, setPosts] = useState([]);
   const [stats, setStats] = useState(null);
-  const { logout } = useAuth();
+  const { user, updateUser, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,13 +24,19 @@ const UserDashboard = () => {
     setPosts(fetchedPosts);
     setStats(fetchedStats);
   };
+  if (!user) {
+    return <div>Loading</div>;
+  }
 
   return (
     <VStack spacing={8} align="stretch" padding={5}>
       <Heading>Your Dashboard</Heading>
       {stats && (
         <VStack align="start">
-          <ProfilePictureEditor />
+          <ProfilePictureEditor
+            currentAvatarUrl={user.avatarUrl}
+            onUpdate={(value) => updateUser("avatarUrl", value)}
+          />
           <Text>Total Posts: {stats.totalPosts}</Text>
           <Text>Total Likes: {stats.totalLikes}</Text>
           <Text>Total Subscribers: {stats.totalSubscribers}</Text>

@@ -127,8 +127,9 @@ const PostEditor = ({ editedPost = null, closeEdit = null }) => {
           onClick={handleSubmit}
           isDisabled={!title || !content}
         >
-          Submit Post
+          {editPost ? "Edit Post" : "Submit Post"}
         </Button>
+        {editPost && <Button onClick={closeEdit}>Cancel Edit</Button>}
       </VStack>
     </Box>
   );
