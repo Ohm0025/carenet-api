@@ -58,6 +58,7 @@ const PostButton = ({ post, fetchPost }) => {
         </Flex>
         <Flex align="center" flexDirection={"column"}>
           <Text mr={2}>you rated this post :</Text>
+
           <Flex>
             {[1, 2, 3, 4, 5].map((rating) => (
               <Icon

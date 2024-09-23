@@ -67,3 +67,6 @@ export const updateProfilePicture = (formData) =>
     })
     .then((res) => res.data)
     .catch((err) => console.error(err));
+
+export const subscribeUser = (id) =>
+  api.post(`/users/subscribe/${id}`).then((res) => res.data);

@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   const checkUser = async () => {
     try {
       const get_user = await getCurrentUser();
+      console.log(get_user);
       if (get_user && get_user._id) {
         setUser((prev) => {
           return {

@@ -5,6 +5,7 @@ import ProfileButton from "./ProfileButton";
 
 const Header = () => {
   const { user } = useAuth();
+  console.log(user);
 
   return (
     <Box bg="green.500" px={4}>

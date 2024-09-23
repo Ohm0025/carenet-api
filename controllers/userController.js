@@ -79,6 +79,9 @@ export const subscribeToUser = async (req, res) => {
 
     if (existingSubscription) {
       // Unsubscribe
+      await User.findByIdAndUpdate(req.user._id, {
+        $pull: { subscribers: userId },
+      });
       await Subscription.findByIdAndDelete(existingSubscription._id);
       return res.json({
         message: "Successfully unsubscribed",
@@ -86,6 +89,9 @@ export const subscribeToUser = async (req, res) => {
       });
     } else {
       // Subscribe
+      await User.findByIdAndUpdate(req.user._id, {
+        $addToSet: { subscribers: userId },
+      });
       const newSubscription = new Subscription({
         subscriber: req.user._id,
         subscribedTo: userId,
@@ -104,8 +110,6 @@ export const updateUserPicture = async (req, res) => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename).replace("\\controllers", "");
 
-  console.log(__dirname);
-
   try {
     if (!req.user) {
       return res.status(400).json({ message: "Authentication required" });
@@ -114,19 +118,13 @@ export const updateUserPicture = async (req, res) => {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    console.log("File received : ", req.file);
-
     const filename = `${uuidv4()}.webp`;
     const filepath = path.join(__dirname, "public", filename);
-
-    console.log("File path:", filepath);
 
     await sharp(req.file.buffer)
       .resize(300, 300)
       .webp({ quality: 80 })
       .toFile(filepath);
-
-    console.log("File processed and saved");
 
     try {
       await fs.access(filepath);
