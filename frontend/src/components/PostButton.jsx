@@ -65,8 +65,9 @@ const PostButton = ({ post, fetchPost }) => {
                 key={rating}
                 as={FaStar}
                 color={
+                  user &&
                   rating <=
-                  post.ratingArr?.find((e) => e.user === user._id)?.value
+                    post.ratingArr?.find((e) => e.user === user._id).value
                     ? "yellow.500"
                     : "gray.300"
                 }

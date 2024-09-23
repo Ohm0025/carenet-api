@@ -14,23 +14,38 @@ import {
   Switch,
 } from "@chakra-ui/react";
 import { createPost, editPost } from "../utils/api";
+import { useAuth } from "../contexts/AuthContext";
+import { useToastContext } from "../contexts/ToastContext";
 
 const PostEditor = ({ editedPost = null, closeEdit = null }) => {
   const [isPublic, setIsPublic] = useState(true);
   const [title, setTitle] = useState(editedPost ? editedPost.title : "");
   const [content, setContent] = useState(editedPost ? editedPost.content : "");
+  const { loading, setLoading } = useAuth();
   const navigate = useNavigate();
+  const showToast = useToastContext();
 
   const handleSubmit = async () => {
-    if (!editedPost) {
-      const newPost = await createPost({ title, content, isPublic });
-      navigate(`/post/${newPost._id}`);
-    } else {
-      const newPost = await editPost(
-        { title, content, isPublic },
-        editedPost._id
+    try {
+      setLoading(true);
+      if (!editedPost) {
+        const newPost = await createPost({ title, content, isPublic });
+        navigate(`/post/${newPost._id}`);
+      } else {
+        const newPost = await editPost(
+          { title, content, isPublic },
+          editedPost._id
+        );
+        closeEdit();
+      }
+    } catch (err) {
+      showToast(
+        "Submit post fail",
+        err.message || "fail to submit post",
+        "error"
       );
-      closeEdit();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,9 +142,9 @@ const PostEditor = ({ editedPost = null, closeEdit = null }) => {
           onClick={handleSubmit}
           isDisabled={!title || !content}
         >
-          {editPost ? "Edit Post" : "Submit Post"}
+          {editedPost ? "Edit Post" : "Submit Post"}
         </Button>
-        {editPost && <Button onClick={closeEdit}>Cancel Edit</Button>}
+        {editedPost && <Button onClick={closeEdit}>Cancel Edit</Button>}
       </VStack>
     </Box>
   );

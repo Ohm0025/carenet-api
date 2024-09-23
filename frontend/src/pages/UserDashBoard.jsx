@@ -5,27 +5,39 @@ import { getUserPosts, getUserStats } from "../utils/api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import ProfilePictureEditor from "../components/ProfilePictureEditor";
+import { useToastContext } from "../contexts/ToastContext";
+import SpinnerMod from "../components/Spinner";
 
 const UserDashboard = () => {
   const [posts, setPosts] = useState([]);
   const [stats, setStats] = useState(null);
-  const { user, updateUser, logout } = useAuth();
+  const { user, updateUser, logout, loading, setLoading } = useAuth();
   const navigate = useNavigate();
+  const showToast = useToastContext();
 
   useEffect(() => {
     fetchUserData();
   }, []);
 
   const fetchUserData = async () => {
-    const [fetchedPosts, fetchedStats] = await Promise.all([
-      getUserPosts(),
-      getUserStats(),
-    ]);
-    setPosts(fetchedPosts);
-    setStats(fetchedStats);
+    try {
+      setLoading(true);
+      const [fetchedPosts, fetchedStats] = await Promise.all([
+        getUserPosts(),
+        getUserStats(),
+      ]);
+      setPosts(fetchedPosts);
+      setStats(fetchedStats);
+    } catch (err) {
+      showToast("Fail to fetch user", err.message || "please login", "error");
+      navigate("/");
+    } finally {
+      setLoading(false);
+    }
   };
-  if (!user) {
-    return <div>Loading</div>;
+
+  if (!user || loading) {
+    return <SpinnerMod />;
   }
 
   return (

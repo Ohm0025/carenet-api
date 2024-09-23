@@ -12,7 +12,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     checkUser();
@@ -24,13 +24,13 @@ export const AuthProvider = ({ children }) => {
 
   const checkUser = async () => {
     try {
+      setLoading(true);
       const get_user = await getCurrentUser();
-      console.log(get_user);
       if (get_user && get_user._id) {
         setUser((prev) => {
           return {
             ...get_user,
-            avatarUrl: "http://localhost:5000" + "/" + get_user.avatarUrl,
+            avatarUrl: API_URL + "/" + get_user.avatarUrl,
           };
         });
       } else {
@@ -38,8 +38,9 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const login = async (email, password) => {
@@ -49,7 +50,6 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     const user = await apiRegister(username, email, password);
-    console.log("register success : navigate to email verification");
   };
 
   const logout = async () => {
@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, updateUser, login, register, logout, loading }}
+      value={{ user, updateUser, login, register, logout, loading, setLoading }}
     >
       {children}
     </AuthContext.Provider>

@@ -6,13 +6,14 @@ import { useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import { useToastContext } from "../contexts/ToastContext";
 import { formatErrorText } from "../utils/formatText";
+import SpinnerMod from "../components/Spinner";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { register } = useAuth();
+  const { register, loading, setLoading } = useAuth();
   const navigate = useNavigate();
   const showToast = useToastContext();
 
@@ -51,6 +52,7 @@ const Register = () => {
         return {};
       });
       try {
+        setLoading(true);
         await register(username, email, password);
         showToast(
           "Register Successful",
@@ -65,6 +67,8 @@ const Register = () => {
           errorMessage && formatErrorText(errorMessage, setErrors),
           "error"
         );
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -74,6 +78,7 @@ const Register = () => {
     validateError();
   };
 
+  if (loading) return <SpinnerMod />;
   return (
     <Box maxWidth="400px" margin="auto" paddingTop={8}>
       <Image

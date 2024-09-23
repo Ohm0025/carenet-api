@@ -22,8 +22,7 @@ const UserProfile = ({ user }) => {
     await subscribeUser(targetId);
     updateUser("subscribers", [...user_self["subscribers"], targetId]);
   };
-  console.log(user);
-  console.log(user_self);
+
   return (
     <>
       <Box borderWidth={"1px"} borderRadius={"lg"} p={4}>
@@ -34,7 +33,7 @@ const UserProfile = ({ user }) => {
               <Heading size={"md"}>{user.username}</Heading>
             </Flex>
             <Button onClick={() => onSubscribe(user._id)}>
-              {user_self.subscribers?.includes(user._id)
+              {user_self && user_self.subscribers?.includes(user._id)
                 ? "Unscribe"
                 : "Subscribe"}
             </Button>

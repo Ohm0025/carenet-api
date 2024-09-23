@@ -20,6 +20,7 @@ function App() {
         <ToastProvider>
           <Router>
             <Header />
+
             <div
               style={{
                 maxWidth: "1000px",

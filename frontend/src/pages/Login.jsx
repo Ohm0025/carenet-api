@@ -4,12 +4,13 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToastContext } from "../contexts/ToastContext";
 import FormInput from "../components/FormInput";
+import SpinnerMod from "../components/Spinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { login } = useAuth();
+  const { login, loading, setLoading } = useAuth();
   const navigate = useNavigate();
   const showToast = useToastContext();
 
@@ -42,11 +43,14 @@ const Login = () => {
         return {};
       });
       try {
+        setLoading(true);
         await login(email, password);
         showToast("Login Successful", "Welcome back!", "success");
         navigate("/");
       } catch (error) {
         showToast("Login Failed", error.response?.data?.message, "error");
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -56,6 +60,7 @@ const Login = () => {
     validateError();
   };
 
+  if (loading) return <SpinnerMod />;
   return (
     <Box maxWidth="400px" margin="auto" paddingTop={8}>
       <Image

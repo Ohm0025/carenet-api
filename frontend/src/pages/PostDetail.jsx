@@ -8,25 +8,39 @@ import { useAuth } from "../contexts/AuthContext";
 import RichTextEditor from "../components/RichTextEditor";
 import FormatContent from "../components/FormatContent";
 import PostButton from "../components/PostButton";
+import SpinnerMod from "../components/Spinner";
+import { useToastContext } from "../contexts/ToastContext";
 
 const PostDetail = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
-  const { user } = useAuth();
+  const { user, loading, setLoading } = useAuth();
 
   const [isEdit, setIsEdit] = useState(false);
 
+  const showToast = useToastContext();
+
   const fetchPost = async () => {
-    const fetchedPost = await getPost(id);
-    setPost(fetchedPost);
+    try {
+      setLoading(true);
+      const fetchedPost = await getPost(id);
+      setPost(fetchedPost);
+    } catch (err) {
+      showToast(
+        "Fail to load post",
+        err.message || "fetch post failed",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchPost();
   }, [id]);
 
-  if (!post) return <div>Loading...</div>;
-
+  if (!post || loading) return <SpinnerMod />;
   return (
     <VStack spacing={8} align="stretch" padding={5}>
       {isEdit ? (
